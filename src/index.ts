@@ -1,23 +1,23 @@
-// import type { Register } from 'caught-core'
+import type { Register } from './index.d'
+import type { Config, Message, Plugin, Reporter } from './types/index'
 import { ajaxInterceptor } from './interceptors/ajax'
 import { fetchInterceptor } from './interceptors/fetch'
 
-const reporter = (message: unknown) => {
+const reporter: Reporter = (message: Message) => {
   console.log(message)
 }
-export function initInterceptors() {
-  ajaxInterceptor(reporter)
-  fetchInterceptor(reporter)
+export function initInterceptors(config: Config) {
+  const { ajax = true, fetch = true } = config
+  ajax && ajaxInterceptor(window, reporter)
+  fetch && fetchInterceptor(window, reporter)
 }
-interface Plugin {
-  apply(register: any): void
-}
+
 export class Request implements Plugin {
-  constructor() {
-    initInterceptors()
+  constructor(config: Config) {
+    initInterceptors(config)
   }
 
-  apply(register: any) {
-    // register.schedulable('request',()=>{})
+  apply(register: Register) {
+    register.schedulable('request', () => {})
   }
 }

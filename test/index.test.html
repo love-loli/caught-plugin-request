@@ -13,7 +13,7 @@
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script type="module">
     import { Request } from '../dist/index.mjs'
-    const request = new Request()
+    const request = new Request({})
     const sendXmlRequest = () => {
       axios.get('https://xxx').then((res) => {
         document.write(res.data.address)

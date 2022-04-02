@@ -1,10 +1,12 @@
+import type { Reporter } from '../types/index'
 export function ajaxInterceptor(
-  reporter: (message: unknown) => void,
+  window: Window & typeof globalThis,
+  reporter: Reporter,
 ) {
-  const xhr = XMLHttpRequest.prototype
+  const xhr = window.XMLHttpRequest.prototype
   if (!xhr) return
   const send = xhr.send
-  xhr.send = function(...args: [body?: Document | XMLHttpRequestBodyInit | null | undefined]) {
+  xhr.send = function(...args) {
     this.addEventListener('loadstart', () => {
       // TODO: ajaxStart
     })
