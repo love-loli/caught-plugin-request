@@ -7,19 +7,33 @@ export function ajaxInterceptor(
   if (!xhr) return
   const send = xhr.send
   xhr.send = function(...args) {
+    let startTime: number
     this.addEventListener('loadstart', () => {
-      // TODO: ajaxStart
-    })
-    this.addEventListener('loadend', () => {
-      // TODO: ajaxEnd
+      startTime = Date.now()
     })
     this.addEventListener('error', (err) => {
-      reporter(err.target)
+      reporter({
+        type: 'ajax',
+        url: this.responseURL,
+        request: args.toString(),
+        startTime,
+        duration: Date.now() - startTime,
+        error: err,
+      })
     })
     this.addEventListener('onreadystatechange', (event: Event) => {
       if (this.readyState === 4) {
         const instance = event.target as XMLHttpRequest
-        if (instance.status !== 200) reporter(instance)
+        if (instance.status !== 200) {
+          reporter({
+            type: 'ajax',
+            url: instance.responseURL,
+            request: args.toString(),
+            startTime,
+            duration: Date.now() - startTime,
+            error: instance.response,
+          })
+        }
       }
     })
     return send.apply(this, args)

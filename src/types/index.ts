@@ -12,8 +12,7 @@ export interface Message{
   duration: number
   url: string
   request: string | null
-  /* 二选一 */
-  error: string
+  error: unknown
 }
 type MessageInit = Message
 export type Reporter = (message: MessageInit) => void
