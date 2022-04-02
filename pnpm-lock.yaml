@@ -9,6 +9,7 @@ importers:
       '@babel/types': ^7.17.0
       '@types/node': ^17.0.23
       bumpp: ^7.1.1
+      caught-core: ^0.0.4-beta
       eslint: ^8.12.0
       esno: ^0.14.1
       pnpm: ^6.32.4
@@ -23,6 +24,7 @@ importers:
       '@babel/types': 7.17.0
       '@types/node': 17.0.23
       bumpp: 7.1.1
+      caught-core: 0.0.4-beta
       eslint: 8.12.0
       esno: 0.14.1
       pnpm: 6.32.4
@@ -832,6 +834,10 @@ packages:
 
   /caniuse-lite/1.0.30001323:
     resolution: {integrity: sha512-e4BF2RlCVELKx8+RmklSEIVub1TWrmdhvA5kEUueummz1XyySW0DVk+3x9HyhU9MuWTa2BhqLgEuEmUwASAdCA==}
+    dev: true
+
+  /caught-core/0.0.4-beta:
+    resolution: {integrity: sha512-5EMC6aGEFziKN3xedniCNnWtFiKVPDgo16wk6I2uR91u7IOIkYMoHNOiv4tnXtD/NmThbapZyfBc1xyZHH/Rcg==}
     dev: true
 
   /chai/4.3.6:
