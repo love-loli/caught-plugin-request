@@ -8,10 +8,9 @@ export interface Config {
 }
 export interface Message{
   type: 'ajax' | 'fetch'
-  startTime: number
-  duration: number
-  url: string
-  request: string | null
+  startTime?: number
+  duration?: number
+  request?: object
   error: unknown
 }
 type MessageInit = Message

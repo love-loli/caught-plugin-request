@@ -15,8 +15,7 @@ export function fetchInterceptor(
         const error = await response.json()
         reporter({
           type: 'fetch',
-          url: url.toString(),
-          request: JSON.stringify(options),
+          request: { ...options, url },
           error,
           duration: Date.now() - startTime,
           startTime,
@@ -26,8 +25,7 @@ export function fetchInterceptor(
     catch (error) {
       reporter({
         type: 'fetch',
-        url: url.toString(),
-        request: JSON.stringify(options),
+        request: { ...options, url },
         error,
         duration: Date.now() - startTime,
         startTime,

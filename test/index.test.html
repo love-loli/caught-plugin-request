@@ -7,8 +7,10 @@
     <title>AJAX-TEST</title>
   </head>
   <body>
-    <button id="ajax-btn">发送AJAX请求</button>
-    <button id="fetch-btn">发送Fetch请求</button>
+    <button id="ajax-btn">AJAX: wrong url</button>
+<!--     <button id="ajax-btn">AJAX: 404</button>
+    <button id="ajax-btn">AJAX: 500</button> -->
+    <button id="fetch-btn">Fetch: wrong url</button>
   </body>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script type="module">
@@ -17,6 +19,8 @@
     const sendXmlRequest = () => {
       axios.get('https://xxx').then((res) => {
         document.write(res.data.address)
+      }).catch((err) => {
+        document.write(err.message)
       })
     }
     const sendFetchRequest = () => {
@@ -24,6 +28,8 @@
         return res.json()
       }).then((res) => {
         document.write(res.address)
+      }).catch((err) => {
+        document.write(err.message)
       })
     }
     document.getElementById('ajax-btn').onclick = sendXmlRequest
