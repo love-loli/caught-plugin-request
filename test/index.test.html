@@ -8,7 +8,8 @@
   </head>
   <body>
     <button id="ajax-btn">AJAX: wrong url</button>
-<!--     <button id="ajax-btn">AJAX: 404</button>
+    <button id="ajax-post">AJAX: post</button>
+    <!--     <button id="ajax-btn">AJAX: 404</button>
     <button id="ajax-btn">AJAX: 500</button> -->
     <button id="fetch-btn">Fetch: wrong url</button>
   </body>
@@ -17,22 +18,39 @@
     import { Request } from '../dist/index.mjs'
     const request = new Request({})
     const sendXmlRequest = () => {
-      axios.get('https://xxx').then((res) => {
-        document.write(res.data.address)
-      }).catch((err) => {
-        document.write(err.message)
-      })
+      axios
+        .get('https://xxx')
+        .then((res) => {
+          document.write(res.data.address)
+        })
+        .catch((err) => {
+          document.write(err.message)
+        })
     }
     const sendFetchRequest = () => {
-      fetch('https://xxx').then((res) => {
-        return res.json()
-      }).then((res) => {
-        document.write(res.address)
-      }).catch((err) => {
-        document.write(err.message)
-      })
+      fetch('https://xxx')
+        .then((res) => {
+          return res.json()
+        })
+        .then((res) => {
+          document.write(res.address)
+        })
+        .catch((err) => {
+          document.write(err.message)
+        })
+    }
+    const sendGetXmlRequest = () => {
+      axios
+        .get('https://randomuser.me/api/')
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
     document.getElementById('ajax-btn').onclick = sendXmlRequest
     document.getElementById('fetch-btn').onclick = sendFetchRequest
+    document.getElementById('ajax-post').onclick = sendGetXmlRequest
   </script>
 </html>

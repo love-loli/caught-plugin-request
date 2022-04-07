@@ -16,26 +16,28 @@ export function ajaxInterceptor(
     duration: undefined,
     error: undefined,
   }
-  xhr.open = function(method, url, async, user, password) {
-    reportContent.request = { method, url, async, user, password }
-    return open.apply(this, [method, url, async, user, password])
+  xhr.open = function(...args) {
+    const [method, url] = args
+    reportContent.request = { method, url }
+    return open.apply(this, args as any)
   }
   xhr.send = function(...args) {
     this.addEventListener('loadstart', () => {
       reportContent.startTime = Date.now()
     })
     this.addEventListener('error', (e) => {
-      reportContent.error = e.target
+      // reportContent.error =
     })
-    this.addEventListener('onreadystatechange', (event: Event) => {
+    this.addEventListener('readystatechange', (event: Event) => {
       const instance = event.target as XMLHttpRequest
-      if (instance.readyState === 4 && instance.status !== 200)
-        reportContent.error = instance.response
+      if (instance.readyState === XMLHttpRequest.DONE) {
+        if (instance.status !== 200)
+          reportContent.error = instance.response
+      }
     })
     this.addEventListener('loadend', () => {
       if (reportContent.startTime)
         reportContent.duration = Date.now() - reportContent.startTime
-      reporter(reportContent)
     })
     return send.apply(this, args)
   }
