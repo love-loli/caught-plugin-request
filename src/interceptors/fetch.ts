@@ -18,7 +18,7 @@ export function fetchInterceptor(
           content: {
             status,
             statusText,
-            response,
+            response: await response.text(),
             url: url.toString(),
             method: options?.method ?? 'unknown',
           },
