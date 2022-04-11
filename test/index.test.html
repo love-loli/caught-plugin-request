@@ -8,14 +8,18 @@
   </head>
   <body>
     <ul id="ajax">
-      <li><button id="ajax-wrong">AJAX: wrong url</button></li>
-      <li><button id="ajax-200">AJAX: 200</button></li>
-      <li><button id="ajax-401">AJAX: 401</button></li>
-      <li><button id="ajax-404">AJAX: 404</button></li>
-      <li><button id="ajax-500">AJAX: 500</button></li>
+      <li><button id="ajax-wrong">XMLHttpRequest: wrong url</button></li>
+      <li><button id="ajax-200">XMLHttpRequest: 200</button></li>
+      <li><button id="ajax-401">XMLHttpRequest: 401</button></li>
+      <li><button id="ajax-404">XMLHttpRequest: 404</button></li>
+      <li><button id="ajax-500">XMLHttpRequest: 500</button></li>
     </ul>
     <ul id="fetch">
-      <li><button id="fetch-btn">Fetch: wrong url</button></li>
+      <li><button id="fetch-wrong">fetch: wrong url</button></li>
+      <li><button id="fetch-200">fetch: 200</button></li>
+      <li><button id="fetch-401">fetch: 401</button></li>
+      <li><button id="fetch-404">fetch: 404</button></li>
+      <li><button id="fetch-500">fetch: 500</button></li>
     </ul>
     <div>
       <b>Request result:</b>
@@ -42,6 +46,7 @@
     const ajax500 = () => instance.get('/500')
 
     ajax.addEventListener('click', (e) => {
+      const id = e.target.id
       const fireMap = {
         'ajax-wrong': ajaxWrong,
         'ajax-200': ajax200,
@@ -49,7 +54,26 @@
         'ajax-404': ajax404,
         'ajax-500': ajax500,
       }
+      if (fireMap[id]) {
+        fireMap[id]()
+          .then((res) => {
+            result.innerHTML = JSON.stringify(res, null, 2)
+          })
+          .catch((err) => {
+            result.innerHTML = err
+          })
+      }
+    })
+
+    fetch.addEventListener('click', (e) => {
       const id = e.target.id
+      const fireMap = {
+        'fetch-wrong': () => window.fetch('http://:wrong', { method: 'get' }),
+        'fetch-200': () => window.fetch('http://localhost:3000/200', { method: 'get' }),
+        'fetch-401': () => window.fetch('http://localhost:3000/401', { method: 'get' }),
+        'fetch-404': () => window.fetch('http://localhost:3000/notFound', { method: 'get' }),
+        'fetch-500': () => window.fetch('http://localhost:3000/500', { method: 'get' }),
+      }
       if (fireMap[id]) {
         fireMap[id]()
           .then((res) => {
