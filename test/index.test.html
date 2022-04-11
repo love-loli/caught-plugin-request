@@ -22,7 +22,7 @@
       <li><button id="fetch-500">fetch: 500</button></li>
     </ul>
     <div>
-      <b>Request result:</b>
+      <b>Response:</b>
       <pre id="result"></pre>
     </div>
   </body>
@@ -75,9 +75,27 @@
         'fetch-500': () => window.fetch('http://localhost:3000/500', { method: 'get' }),
       }
       if (fireMap[id]) {
+        let response
         fireMap[id]()
           .then((res) => {
-            result.innerHTML = JSON.stringify(res, null, 2)
+            response = res.clone()
+            return res.json()
+          })
+          .then((body) => {
+            result.innerHTML = JSON.stringify({
+              body,
+              bodyUsed: response.bodyUsed,
+              headers: {
+                'content-type': response.headers.get('content-type'),
+                'content-length': response.headers.get('content-length'),
+              },
+              status: response.status,
+              statusText: response.statusText,
+              ok: response.ok,
+              type: response.type,
+              redirected: response.redirected,
+              url: response.url,
+            }, null, 2)
           })
           .catch((err) => {
             result.innerHTML = err
