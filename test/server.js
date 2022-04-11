@@ -6,10 +6,18 @@ const port = 3000
 app.use(cors())
 // 200
 app.get('/200', (req, res) => {
-  res.status(200).json(JSON.stringify(req.params, null, 2))
+  res.status(200).json({
+    success: true,
+    code: '02000100',
+    data: null,
+  })
 })
 app.post('/200', (req, res) => {
-  res.status(200).json(JSON.stringify(req.params, null, 2))
+  res.status(200).json({
+    success: true,
+    code: '02000100',
+    data: null,
+  })
 })
 
 // 500
