@@ -10,14 +10,13 @@ export interface Message{
   type: 'ajax' | 'fetch'
   startTime: number | undefined
   duration: number | undefined
-  request: {
+  content: Partial<{
     method: string
     url: string
     status: number
     statusText: string
     response: any
-  }
-  error: unknown
+  }>
 }
 type MessageInit = Message
 export type Reporter = (message: MessageInit) => void

@@ -12,11 +12,16 @@ export function fetchInterceptor(
     try {
       response = await originalFetch(...args)
       if (!response.ok || response.status !== 200) {
-        const error = await response.json()
+        const { status, statusText } = response
         reporter({
           type: 'fetch',
-          request: { ...options, url },
-          error,
+          content: {
+            status,
+            statusText,
+            response,
+            url: url.toString(),
+            method: options?.method ?? 'unknown',
+          },
           duration: Date.now() - startTime,
           startTime,
         })
@@ -25,8 +30,11 @@ export function fetchInterceptor(
     catch (error) {
       reporter({
         type: 'fetch',
-        request: { ...options, url },
-        error,
+        content: {
+          response: error,
+          url: url.toString(),
+          method: options?.method ?? 'unknown',
+        },
         duration: Date.now() - startTime,
         startTime,
       })
