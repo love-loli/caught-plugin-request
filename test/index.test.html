@@ -7,50 +7,58 @@
     <title>AJAX-TEST</title>
   </head>
   <body>
-    <button id="ajax-btn">AJAX: wrong url</button>
-    <button id="ajax-post">AJAX: post</button>
-    <!--     <button id="ajax-btn">AJAX: 404</button>
-    <button id="ajax-btn">AJAX: 500</button> -->
-    <button id="fetch-btn">Fetch: wrong url</button>
+    <ul id="ajax">
+      <li><button id="ajax-wrong">AJAX: wrong url</button></li>
+      <li><button id="ajax-200">AJAX: 200</button></li>
+      <li><button id="ajax-401">AJAX: 401</button></li>
+      <li><button id="ajax-404">AJAX: 404</button></li>
+      <li><button id="ajax-500">AJAX: 500</button></li>
+    </ul>
+    <ul id="fetch">
+      <li><button id="fetch-btn">Fetch: wrong url</button></li>
+    </ul>
+    <div>
+      <b>Request result:</b>
+      <pre id="result"></pre>
+    </div>
   </body>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script type="module">
     import { Request } from '../dist/index.mjs'
-    const request = new Request({})
-    const sendXmlRequest = () => {
-      axios
-        .get('https://xxx')
-        .then((res) => {
-          document.write(res.data.address)
-        })
-        .catch((err) => {
-          document.write(err.message)
-        })
-    }
-    const sendFetchRequest = () => {
-      fetch('https://xxx')
-        .then((res) => {
-          return res.json()
-        })
-        .then((res) => {
-          document.write(res.address)
-        })
-        .catch((err) => {
-          document.write(err.message)
-        })
-    }
-    const sendGetXmlRequest = () => {
-      axios
-        .get('https://randomuser.me/api/')
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    }
-    document.getElementById('ajax-btn').onclick = sendXmlRequest
-    document.getElementById('fetch-btn').onclick = sendFetchRequest
-    document.getElementById('ajax-post').onclick = sendGetXmlRequest
+    // init interceptor
+    const request = new Request()
+
+    const ajax = document.getElementById('ajax')
+    const fetch = document.getElementById('fetch')
+    const result = document.getElementById('result')
+
+    const instance = axios.create({
+      baseURL: 'http://localhost:3000',
+    })
+    const ajaxWrong = () => axios.get('http://:wrong')
+    const ajax200 = () => instance.get('/200')
+    const ajax401 = () => instance.get('/401')
+    const ajax404 = () => instance.get('/notFound')
+    const ajax500 = () => instance.get('/500')
+
+    ajax.addEventListener('click', (e) => {
+      const fireMap = {
+        'ajax-wrong': ajaxWrong,
+        'ajax-200': ajax200,
+        'ajax-401': ajax401,
+        'ajax-404': ajax404,
+        'ajax-500': ajax500,
+      }
+      const id = e.target.id
+      if (fireMap[id]) {
+        fireMap[id]()
+          .then((res) => {
+            result.innerHTML = JSON.stringify(res, null, 2)
+          })
+          .catch((err) => {
+            result.innerHTML = err
+          })
+      }
+    })
   </script>
 </html>
