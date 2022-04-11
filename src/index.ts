@@ -7,9 +7,10 @@ const reporter: Reporter = (message: Message) => {
   console.log(message)
 }
 export function initInterceptors(config: Config) {
-  const { ajax = true, fetch = true } = config
-  ajax && ajaxInterceptor(window, reporter)
-  fetch && fetchInterceptor(window, reporter)
+  if (!config) {
+    ajaxInterceptor(window, reporter)
+    fetchInterceptor(window, reporter)
+  }
 }
 
 export class Request implements Plugin {
