@@ -14,13 +14,6 @@
       <li><button id="ajax-404">XMLHttpRequest: 404</button></li>
       <li><button id="ajax-500">XMLHttpRequest: 500</button></li>
     </ul>
-    <ul id="fetch">
-      <li><button id="fetch-wrong">fetch: wrong url</button></li>
-      <li><button id="fetch-200">fetch: 200</button></li>
-      <li><button id="fetch-401">fetch: 401</button></li>
-      <li><button id="fetch-404">fetch: 404</button></li>
-      <li><button id="fetch-500">fetch: 500</button></li>
-    </ul>
     <div>
       <b>Response:</b>
       <pre id="result"></pre>
@@ -33,7 +26,6 @@
     const request = new Request()
 
     const ajax = document.getElementById('ajax')
-    const fetch = document.getElementById('fetch')
     const result = document.getElementById('result')
 
     const instance = axios.create({
@@ -58,44 +50,6 @@
         fireMap[id]()
           .then((res) => {
             result.innerHTML = JSON.stringify(res, null, 2)
-          })
-          .catch((err) => {
-            result.innerHTML = err
-          })
-      }
-    })
-
-    fetch.addEventListener('click', (e) => {
-      const id = e.target.id
-      const fireMap = {
-        'fetch-wrong': () => window.fetch('http://:wrong', { method: 'get' }),
-        'fetch-200': () => window.fetch('http://localhost:3000/200', { method: 'get' }),
-        'fetch-401': () => window.fetch('http://localhost:3000/401', { method: 'get' }),
-        'fetch-404': () => window.fetch('http://localhost:3000/notFound', { method: 'get' }),
-        'fetch-500': () => window.fetch('http://localhost:3000/500', { method: 'get' }),
-      }
-      if (fireMap[id]) {
-        let response
-        fireMap[id]()
-          .then((res) => {
-            response = res.clone()
-            return res.json()
-          })
-          .then((body) => {
-            result.innerHTML = JSON.stringify({
-              body,
-              bodyUsed: response.bodyUsed,
-              headers: {
-                'content-type': response.headers.get('content-type'),
-                'content-length': response.headers.get('content-length'),
-              },
-              status: response.status,
-              statusText: response.statusText,
-              ok: response.ok,
-              type: response.type,
-              redirected: response.redirected,
-              url: response.url,
-            }, null, 2)
           })
           .catch((err) => {
             result.innerHTML = err
